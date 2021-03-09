@@ -1,3 +1,4 @@
+#include "teach.h"
 #include "sw.h"
 #include "menu.h"
 #include <stdio.h>
@@ -10,17 +11,17 @@ int main(int argc, char const *argv[])
   srand(time(NULL));
   char menu;
   double sw[3] = {0};
+  double td[4][3] = {0};
+  double to[4] = {0};
 
   do
   {
     system("clear");
     printMenu(&menu);
-    // pause();
-    actionMenu(&menu, sw);
+    actionMenu(&menu, sw, td, to);
   } while (menu != 'q');
 
-  // randomizeSW(sw);
-  // printSW(sw);
-
+  system("clear");
+  printf("DONE.\n\n");
   return 0;
 }

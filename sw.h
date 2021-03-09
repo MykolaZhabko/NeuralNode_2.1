@@ -5,7 +5,7 @@
 #define ANSI_COLOR_RESET "\x1b[0m"
 
 void randomizeSW(double *sw);
-void saveSW();
+void saveSW(double *sw);
 void loadSW(double *sw);
 void clearSW(double *sw);
 void printSW(double *sw);

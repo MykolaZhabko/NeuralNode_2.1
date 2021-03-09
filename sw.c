@@ -1,6 +1,7 @@
 #include "sw.h"
 #include <time.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void randomizeSW(double *sw)
 {
@@ -9,14 +10,26 @@ void randomizeSW(double *sw)
   sw[2] = ((float)(rand() % 20000) / 10000) - 1;
 }
 
-void saveSW()
+void saveSW(double *sw)
 {
+  FILE *out;
+  out = fopen("weights.txt", "w");
+  fprintf(out, "%lf %lf %lf", sw[0], sw[1], sw[2]);
+  fclose(out);
 }
 void loadSW(double *sw)
 {
+  FILE *in;
+  in = fopen("weights.txt", "r");
+  fseek(in, 0, SEEK_SET);
+  fscanf(in, "%lf %lf %lf", &sw[0], &sw[1], &sw[2]);
+  fclose(in);
 }
 void clearSW(double *sw)
 {
+  sw[0] = 0;
+  sw[1] = 0;
+  sw[2] = 0;
 }
 
 void printSW(double *sw)
