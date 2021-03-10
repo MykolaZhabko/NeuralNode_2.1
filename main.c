@@ -1,6 +1,7 @@
 #include "teach.h"
 #include "sw.h"
 #include "menu.h"
+#include "analyse.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -9,6 +10,7 @@ int main(int argc, char const *argv[])
 {
   system("clear");
   srand(time(NULL));
+  // srand(23);
   char menu;
   double sw[3] = {0};
   double td[4][3] = {0};

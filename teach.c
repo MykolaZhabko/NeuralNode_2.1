@@ -2,6 +2,7 @@
 #include "menu.h"
 #include "teach.h"
 #include "sigmoid.h"
+#include "analyse.h"
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -83,27 +84,43 @@ void printTD(double td[][3], double *to)
 void transposeTD(double td[][3], double transpose[][4])
 {
 
+  // transpose[0][0] = td[0][0];
+  // transpose[0][1] = td[1][0];
+  // transpose[0][2] = td[2][0];
+  // transpose[0][3] = td[3][0];
+
+  // transpose[1][0] = td[0][1];
+  // transpose[1][1] = td[1][1];
+  // transpose[1][2] = td[2][1];
+  // transpose[1][3] = td[3][1];
+
+  // transpose[2][0] = td[0][2];
+  // transpose[2][1] = td[1][2];
+  // transpose[2][2] = td[2][2];
+  // transpose[2][3] = td[2][2];
+
   for (int i = 0; i < 4; i++)
   {
-    for (int j = 0; j <= 3; j++)
+    for (int j = 0; j < 3; j++)
     {
       transpose[j][i] = td[i][j];
     }
   }
 }
 
-double dotProduct(double *td_var, double *to, int size)
+double dotProduct(double *td, double *sw, int size)
 {
   double result = 0;
   for (int i = 0; i < size; i++)
   {
-    result += td_var[i] * to[i];
+    result += td[i] * sw[i];
   }
   return result;
 }
 
 void thinkTrain(double *sw, double td[][3], double *temp_output)
 {
+
   temp_output[0] = sigmoid(dotProduct(&td[0][0], sw, 3));
   temp_output[1] = sigmoid(dotProduct(&td[1][0], sw, 3));
   temp_output[2] = sigmoid(dotProduct(&td[2][0], sw, 3));
@@ -116,18 +133,18 @@ void train(double *sw, double td[][3], double *to, double transpose[][4], char *
   double adjustments[3] = {0};
   double temp_output[4] = {0};
   readTDFile(td, to, file_name);
-  // printTD(td, to);
+  printTD(td, to);
   transposeTD(td, transpose);
 
-  // printf("%s\n", file_name);
-  // for (int i = 0; i < 3; i++)
-  // {
-  //   for (int j = 0; j < 4; j++)
-  //   {
-  //     printf("%lf ", transpose[i][j]);
-  //   }
-  //   printf("\n");
-  // }
+  printf("%s\n", file_name);
+  for (int i = 0; i < 3; i++)
+  {
+    for (int j = 0; j < 4; j++)
+    {
+      printf("%lf ", transpose[i][j]);
+    }
+    printf("\n");
+  }
 
   for (int k = 0; k < iterations; k++)
   {

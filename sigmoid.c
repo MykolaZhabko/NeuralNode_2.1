@@ -2,13 +2,13 @@
 #include "sigmoid.h"
 #include <math.h>
 
-float sigmoid(float x)
+double sigmoid(double x)
 {
 	return 1 / (1 + expf(-x));
 }
 
 /* argument x is a result of sigmoid(arg) function*/
-float sigmoid_derivative(float x)
+double sigmoid_derivative(double x)
 {
 	return x * (1 - x);
 }
