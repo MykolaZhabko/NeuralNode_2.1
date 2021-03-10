@@ -2,26 +2,22 @@
 #include "sw.h"
 #include "menu.h"
 #include "analyse.h"
+#include "node.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
 int main(int argc, char const *argv[])
 {
-  system("clear");
   srand(time(NULL));
-  // srand(23);
-  char menu;
-  double sw[3] = {0};
-  double td[4][3] = {0};
-  double to[4] = {0};
-  double transpose[3][4] = {0};
+  node redNode;
+  nodeInit(&redNode);
+
   do
   {
     system("clear");
-    printMenu(&menu);
-    actionMenu(&menu, sw, td, to, transpose);
-  } while (menu != 'q');
+    actionMenu(&redNode.menu, redNode.sw, redNode.td, redNode.to, redNode.transpose);
+  } while (redNode.menu != 'q');
 
   system("clear");
   printf("DONE.\n\n");

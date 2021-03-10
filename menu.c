@@ -1,3 +1,4 @@
+#include "node.h"
 #include "sw.h"
 #include "teach.h"
 #include "sigmoid.h"
@@ -15,7 +16,7 @@ void progress(int prosent)
   }
   for (int i = 0; i < 50 - prosent / 2; i++)
   {
-    printf("\u2591");
+    printf("\u2519");
   }
   printf(":%d%%\n", prosent);
 }
@@ -30,7 +31,9 @@ void pause(void)
 void printMenu(char *menu)
 {
   printf(ANSI_COLOR_CYAN);
-  printf("             M   E   N   U \n");
+  printf("\u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e\n");
+  printf("\u2503            M   E   N   U           \u2503 \n");
+  printf("\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f\n");
   printf(ANSI_COLOR_RESET);
   printf(ANSI_COLOR_MAGENTA);
   printf(" ------------------------------------\n");
@@ -74,6 +77,7 @@ void printMenu(char *menu)
 
 void actionMenu(char *menu, double *sw, double td[][3], double *to, double transpose[][4])
 {
+  printMenu(menu);
   switch (*menu)
   {
   case '1':
