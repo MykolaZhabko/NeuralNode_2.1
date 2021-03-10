@@ -13,12 +13,12 @@ int main(int argc, char const *argv[])
   double sw[3] = {0};
   double td[4][3] = {0};
   double to[4] = {0};
-
+  double transpose[3][4] = {0};
   do
   {
     system("clear");
     printMenu(&menu);
-    actionMenu(&menu, sw, td, to);
+    actionMenu(&menu, sw, td, to, transpose);
   } while (menu != 'q');
 
   system("clear");
