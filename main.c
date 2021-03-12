@@ -3,6 +3,7 @@
 #include "menu.h"
 #include "analyse.h"
 #include "node.h"
+#include "image_analyse.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

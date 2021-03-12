@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include <stdio.h>
+
 typedef struct Pixel
 {
   uint8_t red, green, blue;
@@ -26,3 +28,5 @@ typedef struct bmpHeader
 
 bmpHeader *getBmpHeader(int x, int y, int *padding);
 void createBmpPicture(double *sw);
+void readBmpHeader(bmpHeader *header, char *file_name);
+void writeBmpHeader(FILE *fp, bmpHeader *header);

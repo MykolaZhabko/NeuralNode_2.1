@@ -3,6 +3,7 @@
 #include "teach.h"
 #include "sigmoid.h"
 #include "analyse.h"
+#include "image_analyse.h"
 #include "bmp_generator.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,6 +63,7 @@ void printMenu(char *menu)
   printf("| '9' - Generate random RED color    |\n");
   printf("| 'B' - Generate random BMP Picture  |\n");
   printf("|       with RED color               |\n");
+  printf("| 'I' - Image analyse                |\n");
   //  printf("\"2\" - Enter RGB for testing\n");
   //   printf("\"3\" - Generate random RED color\n");
   //   printf("\"4\" - Generate random BMP Picture with RED color\n");
@@ -164,6 +166,10 @@ void actionMenu(char *menu, double *sw, double td[][3], double *to, double trans
     printf("Press [Enter] to continue . . .\n");
     pause();
     pause();
+    break;
+  case 'I':
+    system("clear");
+    selectPicture(sw);
     break;
   default:
     break;

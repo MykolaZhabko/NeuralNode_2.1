@@ -4,6 +4,26 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+void writeBmpHeader(FILE *out, bmpHeader *header)
+{
+  fwrite(&header->type, sizeof(header->type), 1, out);
+  fwrite(&header->size, sizeof(header->size), 1, out);
+  fwrite(&header->reserved1, sizeof(header->reserved1), 1, out);
+  fwrite(&header->reserved2, sizeof(header->reserved2), 1, out);
+  fwrite(&header->offset, sizeof(header->offset), 1, out);
+  fwrite(&header->dib_header_size, sizeof(header->dib_header_size), 1, out);
+  fwrite(&header->width_px, sizeof(header->width_px), 1, out);
+  fwrite(&header->height_px, sizeof(header->height_px), 1, out);
+  fwrite(&header->num_planes, sizeof(header->num_planes), 1, out);
+  fwrite(&header->bits_per_pixel, sizeof(header->bits_per_pixel), 1, out);
+  fwrite(&header->compression, sizeof(header->compression), 1, out);
+  fwrite(&header->image_size_bytes, sizeof(header->image_size_bytes), 1, out);
+  fwrite(&header->x_resolution_ppm, sizeof(header->x_resolution_ppm), 1, out);
+  fwrite(&header->y_resolution_ppm, sizeof(header->y_resolution_ppm), 1, out);
+  fwrite(&header->num_colors, sizeof(header->num_colors), 1, out);
+  fwrite(&header->important_colors, sizeof(header->important_colors), 1, out);
+}
+
 bmpHeader *getBmpHeader(int x, int y, int *padding)
 {
   int padding_local = 0; //(((x * 3) % 4) - 4) * (-1);
@@ -77,22 +97,7 @@ void createBmpPicture(double *sw)
   printf("Number of padding bits addet to each row = %d\n", padding_bit);
 
   out = fopen("img.bmp", "wb");
-  fwrite(&header->type, sizeof(header->type), 1, out);
-  fwrite(&header->size, sizeof(header->size), 1, out);
-  fwrite(&header->reserved1, sizeof(header->reserved1), 1, out);
-  fwrite(&header->reserved2, sizeof(header->reserved2), 1, out);
-  fwrite(&header->offset, sizeof(header->offset), 1, out);
-  fwrite(&header->dib_header_size, sizeof(header->dib_header_size), 1, out);
-  fwrite(&header->width_px, sizeof(header->width_px), 1, out);
-  fwrite(&header->height_px, sizeof(header->height_px), 1, out);
-  fwrite(&header->num_planes, sizeof(header->num_planes), 1, out);
-  fwrite(&header->bits_per_pixel, sizeof(header->bits_per_pixel), 1, out);
-  fwrite(&header->compression, sizeof(header->compression), 1, out);
-  fwrite(&header->image_size_bytes, sizeof(header->image_size_bytes), 1, out);
-  fwrite(&header->x_resolution_ppm, sizeof(header->x_resolution_ppm), 1, out);
-  fwrite(&header->y_resolution_ppm, sizeof(header->y_resolution_ppm), 1, out);
-  fwrite(&header->num_colors, sizeof(header->num_colors), 1, out);
-  fwrite(&header->important_colors, sizeof(header->important_colors), 1, out);
+  writeBmpHeader(out, header);
 
   for (int i = 0; i < y; i++)
   {
@@ -108,4 +113,30 @@ void createBmpPicture(double *sw)
     }
   }
   fclose(out);
+}
+
+void readBmpHeader(bmpHeader *header, char *file_name)
+{
+  printf("Start reading\n");
+  FILE *fp;
+  fp = fopen(file_name, "rb");
+
+  fseek(fp, 0, SEEK_SET);
+  fread(&header->type, sizeof(uint16_t), 1, fp);
+  fread(&header->size, sizeof(uint32_t), 1, fp);
+  fread(&header->reserved1, sizeof(uint16_t), 1, fp);
+  fread(&header->reserved2, sizeof(uint16_t), 1, fp);
+  fread(&header->offset, sizeof(uint32_t), 1, fp);
+  fread(&header->dib_header_size, sizeof(uint32_t), 1, fp);
+  fread(&header->width_px, sizeof(uint32_t), 1, fp);
+  fread(&header->height_px, sizeof(uint32_t), 1, fp);
+  fread(&header->num_planes, sizeof(uint16_t), 1, fp);
+  fread(&header->bits_per_pixel, sizeof(uint16_t), 1, fp);
+  fread(&header->compression, sizeof(uint32_t), 1, fp);
+  fread(&header->image_size_bytes, sizeof(uint32_t), 1, fp);
+  fread(&header->x_resolution_ppm, sizeof(uint32_t), 1, fp);
+  fread(&header->y_resolution_ppm, sizeof(uint32_t), 1, fp);
+  fread(&header->num_colors, sizeof(uint32_t), 1, fp);
+  fread(&header->important_colors, sizeof(uint32_t), 1, fp);
+  printf("END of reading\n");
 }

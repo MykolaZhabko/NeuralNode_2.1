@@ -3,6 +3,7 @@
 #include "teach.h"
 #include "sigmoid.h"
 #include "analyse.h"
+#include "bmp_generator.h"
 #include <stdlib.h>
 #include <stdio.h>
 
