@@ -1,5 +1,6 @@
 #include "bmp_generator.h"
 #include "analyse.h"
+#include "image_analyse.h"
 #include "menu.h"
 #include "sw.h"
 #include <stdlib.h>
@@ -19,8 +20,91 @@ void aboutImgAnalyse()
   printf(ANSI_COLOR_RESET);
 }
 
-void readPicture(double *sw, char *file_name)
+void selectAnalyseSettings(double *sw, char *file_name)
 {
+  float pros = -1;
+  int r = 255, g = 255, b = 255;    //for threshold
+  uint8_t rgb[3] = {255, 255, 255}; //for replacement color
+  char selection = 0;
+  while (selection != 'b')
+  {
+    system("clear");
+    printf("\u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e\n");
+
+    printf("\u2503          SETTINGS                  \u2503\n");
+    printf("\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f\n");
+    printf(" ------------------------------------\n");
+    printf("| '1' - SET ACCEPTION THRESHOLD IN %% |\n");
+    printf("|       FOR RED COLOR.(Default 20%%)  |\n");
+    printf("| '2' - SELECT COLOR TO REPLASE NOT  |\n");
+    printf("|       RED COLOR.(Defaulr - WHITE)  |\n");
+    printf("| 'S' - START!                       |\n");
+    printf(" ------------------------------------\n");
+    printf("| 'b' - BACK                         |\n");
+    printf(" ------------------------------------\n");
+    scanf("%c", &selection);
+    switch (selection)
+    {
+    case '1':
+      system("clear");
+      printf("Enter threshold: ");
+      scanf("%f", &pros);
+      break;
+    case '2':
+      system("clear");
+      printf("Enter RED\t(0..255) : ");
+      scanf("%d", &r);
+      printf("Enter GREEN\t(0..255) : ");
+      scanf("%d", &g);
+      printf("Enter BLUE\t(0..255) : ");
+      scanf("%d", &b);
+      break;
+    case 'S':
+      system("clear");
+      if (r > 255 || r < 0 || g > 255 || g < 0 || b > 255 || b < 0)
+      {
+        printf("WRONG SETTINGS OF RGB COLOR!\n");
+        printf("DEFAULT SETTINGS FOR RGB IS WHITE COLOR:\n");
+        printf("R = 255.\n");
+        printf("G = 255.\n");
+        printf("B = 255.\n\n");
+      }
+      else
+      {
+        rgb[0] = (uint8_t)r;
+        rgb[1] = (uint8_t)g;
+        rgb[2] = (uint8_t)b;
+      }
+      if (pros < 0 || pros > 100)
+      {
+        printf("WRONG SETTINGS FOR THRESHOLD!\n");
+        printf("DEFAULT SETTINGS FOR THRESHOLD IS 20%%:\n\n");
+        pros = 0.2;
+      }
+      else
+      {
+        pros = pros / 100.0;
+      }
+
+      readPicture(sw, file_name, rgb, &pros);
+      printf(ANSI_COLOR_RED);
+      printf("\nThe picture is saved in local repository: \"boat_result.bmp\"\n");
+      printf(ANSI_COLOR_RESET);
+      printf("Press [Enter] to continue . . .\n");
+      selection = 'q';
+      pause();
+      pause();
+      break;
+    default:
+      break;
+    }
+  }
+}
+
+void readPicture(double *sw, char *file_name, uint8_t *rgb_user, float *threshold)
+{
+  printf("R:%d  G:%d  B:%d\n", rgb_user[0], rgb_user[1], rgb_user[2]);
+  printf("TRESHOLD: %f\n", *threshold);
   bmpHeader header;
   FILE *fp;
   uint8_t one_byte = 0;
@@ -31,14 +115,6 @@ void readPicture(double *sw, char *file_name)
   fp = fopen(file_name, "rb");
   fseek(fp, 0L, SEEK_END);
   image_size = ftell(fp);
-
-  // fseek(fp, 54, SEEK_SET);
-  // fread(&b, sizeof(uint8_t), 1, fp);
-  // printf("= %02x ", b);
-  // fread(&b, sizeof(uint8_t), 1, fp);
-  // printf("= %02x ", b);
-  // fread(&b, sizeof(uint8_t), 1, fp);
-  // printf("= %02x ", b);
 
   fclose(fp);
 
@@ -87,7 +163,7 @@ void readPicture(double *sw, char *file_name)
       rgb[1] = (double)img[i * x + j].green / 255;
       rgb[2] = (double)img[i * x + j].blue / 255;
 
-      if (analyseRGB(sw, rgb) > 0.1)
+      if (analyseRGB(sw, rgb) > *threshold)
       {
         fwrite(&img[i * x + j].blue, sizeof(img[i * x + j].blue), 1, fp);
         fwrite(&img[i * x + j].green, sizeof(img[i * x + j].green), 1, fp);
@@ -95,10 +171,15 @@ void readPicture(double *sw, char *file_name)
       }
       else
       {
-
-        fwrite(&one_byte, sizeof(img[i * x + j].blue), 1, fp);
-        fwrite(&one_byte, sizeof(img[i * x + j].green), 1, fp);
-        fwrite(&one_byte, sizeof(img[i * x + j].red), 1, fp);
+        img[i * x + j].red = rgb_user[0];
+        img[i * x + j].green = rgb_user[1];
+        img[i * x + j].blue = rgb_user[2];
+        // fwrite(&one_byte, sizeof(img[i * x + j].blue), 1, fp);
+        // fwrite(&one_byte, sizeof(img[i * x + j].green), 1, fp);
+        // fwrite(&one_byte, sizeof(img[i * x + j].red), 1, fp);
+        fwrite(&img[i * x + j].blue, sizeof(img[i * x + j].blue), 1, fp);
+        fwrite(&img[i * x + j].green, sizeof(img[i * x + j].green), 1, fp);
+        fwrite(&img[i * x + j].red, sizeof(img[i * x + j].red), 1, fp);
       }
     }
     for (int p = 0; p < padding_bytes; p++)
@@ -110,6 +191,7 @@ void readPicture(double *sw, char *file_name)
 
   printf("Pixel number: %d\n", x * y);
   printf("Padding bytes added to eash row: %d\n", padding_bytes);
+  *threshold = -1;
   // printf("= %02x\n", b);
 }
 
@@ -149,12 +231,7 @@ void selectPicture(double *sw)
     {
     case '1':
       system("clear");
-      readPicture(sw, "boat.bmp");
-      printf(ANSI_COLOR_RED);
-      printf("\nThe picture is saved in local repository: \"boat_result.bmp\"\n");
-      printf(ANSI_COLOR_RESET);
-      printf("Press [Enter] to continue . . .\n");
-      pause();
+      selectAnalyseSettings(sw, "boat.bmp");
       pause();
       break;
     case '4':
