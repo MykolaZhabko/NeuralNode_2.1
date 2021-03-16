@@ -5,6 +5,7 @@
 #include "analyse.h"
 #include "image_analyse.h"
 #include "bmp_generator.h"
+#include "sdl_test.h"
 #include <stdio.h>
 #include <stdlib.h>
 void progress(int prosent)
@@ -64,6 +65,7 @@ void printMenu(char *menu)
   printf("| 'B' - Generate random BMP Picture  |\n");
   printf("|       with RED color               |\n");
   printf("| 'I' - Image analyse                |\n");
+  printf("| 'W' - Show window rundom color(SDL)|\n");
   //  printf("\"2\" - Enter RGB for testing\n");
   //   printf("\"3\" - Generate random RED color\n");
   //   printf("\"4\" - Generate random BMP Picture with RED color\n");
@@ -170,6 +172,27 @@ void actionMenu(char *menu, double *sw, double td[][3], double *to, double trans
   case 'I':
     system("clear");
     selectPicture(sw);
+    break;
+  case 'W':
+    system("clear");
+    if (sw[0] == 0 && (sw[1]) == 0 && (sw[2]) == 0)
+    {
+      printSW(sw);
+      printf(ANSI_COLOR_YELLOW);
+      printf("\u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e\n");
+
+      printf("\u2503        THE SYNAPTIC WEIGHTS        \u2503\n");
+      printf("\u2503   OF THE NEURONE ARE NOT TRAINED !!\u2503\n");
+      printf("\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f\n");
+      printf(ANSI_COLOR_RESET);
+      printf("Press [Enter] to continue . . .\n");
+      pause();
+      pause();
+    }
+    else
+    {
+      startWindow(sw);
+    }
     break;
   default:
     break;

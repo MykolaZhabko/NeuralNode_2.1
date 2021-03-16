@@ -6,6 +6,7 @@
 #include "image_analyse.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "sdl_test.h"
 #include <time.h>
 
 int main(int argc, char const *argv[])
