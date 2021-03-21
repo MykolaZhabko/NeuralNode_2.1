@@ -29,7 +29,7 @@ bmp_generator.o: bmp_generator.c bmp_generator.h
 image_analyse.o: image_analyse.c image_analyse.h
 	gcc -c image_analyse.c
 
-sdl_test.0: sdl_test.c sdl_test.h
+sdl_test.o: sdl_test.c sdl_test.h
 	gcc -c sdl_test.c
 
 clean:

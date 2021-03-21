@@ -1,3 +1,12 @@
+/**
+ * @file menu.c
+ * @author Zhabko Mykola (mykola.zhabko@gmail.com)
+ * @brief Definitions of the MENU functions  
+ * @version 0.1
+ * @date 2021-03-20
+ * 
+ * @copyright Copyright (c) 2021
+ */
 #include "node.h"
 #include "sw.h"
 #include "teach.h"
@@ -8,12 +17,17 @@
 #include "sdl_test.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+/**
+ * @brief This function is just for fun! It creates a downloading or processing animation 0%....100% ..Ready
+ * 
+ * @param[in] prosent - integer number which is equal the percent value you want to visualise 10% or 20%
+ */
 void progress(int prosent)
 {
   printf("PROGRESS:");
   for (int i = 0; i < prosent / 2; i++)
   {
-    // printf("\u2500\u2501\n");
     printf("\u2593");
   }
   for (int i = 0; i < 50 - prosent / 2; i++)
@@ -23,6 +37,10 @@ void progress(int prosent)
   printf(":%d%%\n", prosent);
 }
 
+/**
+ * @brief The function is used to create a pause in the UI of the app and simply require to press return to continue
+ * 
+ */
 void pause(void)
 {
   char pause;
@@ -30,6 +48,11 @@ void pause(void)
   scanf("%c", &pause);
 }
 
+/**
+ * @brief For printing the menu (User interface). It prints the text and graphical elements with determined layout for main menu.
+ * 
+ * @param[in] char* menu  - the character for state machine '1','2','3'... 'q'
+ */
 void printMenu(char *menu)
 {
   printf(ANSI_COLOR_CYAN);
@@ -79,6 +102,14 @@ void printMenu(char *menu)
   scanf("%c", menu);
 }
 
+/**
+ * @brief This function is for representing main menu of the application.
+ * @param[in] char* menu - User input '1', '2' ... and so on
+ * @param[in] double* sw - synaptic weights of the neurone
+ * @param[in] double[4][3] td - teaching data for neurone, set of RGB values in the form of 4x3 array
+ * @param[in] double* to - predetermined by user output to the teachibg data '0' if not red and '1' if red
+ * @param[in] double[3][4] transpose - the transpose of the teching data
+ */
 void actionMenu(char *menu, double *sw, double td[][3], double *to, double transpose[][4])
 {
   printMenu(menu);

@@ -1,3 +1,13 @@
+/**
+ * @file image_analyse.c
+ * @author Zhabko Mykola (mykola.zhabko@gmail.com)
+ * @brief Definition of the functions to analyse the BMP images
+ * @version 0.1
+ * @date 2021-03-21
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "bmp_generator.h"
 #include "analyse.h"
 #include "image_analyse.h"
@@ -6,6 +16,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/**
+ * @brief This function will print description of the option to analyse the BMP picture.
+ * 
+ */
 void aboutImgAnalyse()
 {
   printf(ANSI_COLOR_YELLOW);
@@ -20,11 +34,17 @@ void aboutImgAnalyse()
   printf(ANSI_COLOR_RESET);
 }
 
+/**
+ * @brief This function will print the menu where you can choose to set a thresholt for red color in percents and the color to replace non-red pixels.
+ * 
+ * @param[in] sw - pointer to double (double array). Synaptic weights.
+ * @param[in] file_name - string constant. The path to the BMP image. 
+ */
 void selectAnalyseSettings(double *sw, char *file_name)
 {
   float pros = -1;
-  int r = 255, g = 255, b = 255;    //for threshold
-  uint8_t rgb[3] = {255, 255, 255}; //for replacement color
+  int r = 255, g = 255, b = 255;    ///<for threshold
+  uint8_t rgb[3] = {255, 255, 255}; ///<for replacement color
   char selection = 0;
   while (selection != 'b')
   {
@@ -101,6 +121,14 @@ void selectAnalyseSettings(double *sw, char *file_name)
   }
 }
 
+/**
+ * @brief The function will red a file (BMP image) and Neurone will analyse it and detect a red color pixels and than it will store the resulting picture in the current directory. 
+ * 
+ * @param[in] sw - pointer to double (double array). Synaptic weights.
+ * @param[in] file_name - string constant. The path to the BMP image. 
+ * @param rgb_user - rbg color to replace non red pixels
+ * @param threshold - thresholt for the probability
+ */
 void readPicture(double *sw, char *file_name, uint8_t *rgb_user, float *threshold)
 {
   printf("R:%d  G:%d  B:%d\n", rgb_user[0], rgb_user[1], rgb_user[2]);
@@ -195,6 +223,12 @@ void readPicture(double *sw, char *file_name, uint8_t *rgb_user, float *threshol
   // printf("= %02x\n", b);
 }
 
+/**
+ * @brief Selecting menu. You can select the picture to analyse here.
+ * @warning For now only one image available for analyse.
+ * 
+ * @param[in] sw - pointer to double (double array). Synaptic weights.
+ */
 void selectPicture(double *sw)
 {
   char selection;

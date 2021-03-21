@@ -1,5 +1,20 @@
+/**
+ * @file node.c
+ * @author Zhabko Mykola (mykola.zhabko@gmail.com)
+ * @brief Definition of the functions declared int node.h
+ * @version 0.1
+ * @date 2021-03-20
+ * 
+ * @copyright Copyright (c) 2021s
+ * 
+ */
 #include "node.h"
 
+/**
+ * @brief Initialization of the fields of the node.
+ * 
+ * @param core - pointer of the 'node' type
+ */
 void nodeInit(node *core)
 {
   core->menu = 0;

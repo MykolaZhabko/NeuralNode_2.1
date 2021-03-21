@@ -1,9 +1,25 @@
+/**
+ * @file bmp_generator.c
+ * @author Zhabko Mykola (mykola.zhabko@gmail.com)
+ * @brief Fuctions for dealing with BMP files are defined here.
+ * @version 0.1
+ * @date 2021-03-21
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "bmp_generator.h"
 #include "analyse.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 
+/**
+ * @brief This function is writing BMP File header to the file.
+ * 
+ * @param[in] out - pointer to FILE.  
+ * @param[in] header - pointer to bmpHeader variable which will be writen to the file
+ */
 void writeBmpHeader(FILE *out, bmpHeader *header)
 {
   fwrite(&header->type, sizeof(header->type), 1, out);
@@ -24,6 +40,15 @@ void writeBmpHeader(FILE *out, bmpHeader *header)
   fwrite(&header->important_colors, sizeof(header->important_colors), 1, out);
 }
 
+/**
+ * @brief Get the Bmp Header object with the height of 'y' and width of 'x' pixels.
+ * @warning The maximum resolution is 1200 x 1200 pixels. If you want higher resolution, you need to change data types of inner variables.
+ * 
+ * @param[in] x - int value. Width of the image 
+ * @param[in] y - int value. Hight of the picture 
+ * @param[in] padding - pointer to int. Padding requaired for each row of pixels in the bit map, it is calculated with respect to the resolution of the image. This value will be used in another function of rendering the picture.  
+ * @return bmpHeader* - the return value is an address of the BMP header
+ */
 bmpHeader *getBmpHeader(int x, int y, int *padding)
 {
   int padding_local = 0; //(((x * 3) % 4) - 4) * (-1);
@@ -59,6 +84,11 @@ bmpHeader *getBmpHeader(int x, int y, int *padding)
   return picture_header;
 }
 
+/**
+ * @brief Create a Bmp Picture object. The function will ask user to enter resolution of the image to create, and it will generate an image filled with a random RED colore pixels using neurones function obtainRandomRGB(sw, rgb).
+ * 
+ * @param[in] sw - pointer to double (double array). Synaptic weights. 
+ */
 void createBmpPicture(double *sw)
 {
   FILE *out;
@@ -115,6 +145,13 @@ void createBmpPicture(double *sw)
   fclose(out);
 }
 
+/**
+ * @brief This function will read BMP File header.
+ * @warning The header have to be exactly 54 bytes format. The format of the header can be checked from bmp_generator.h
+ * 
+ * @param[in] header - pointer to bmpHeader data type. The readed header will be stored here. 
+ * @param[in] file_name - FILE pointer. Pointer to the file you want to read header from. 
+ */
 void readBmpHeader(bmpHeader *header, char *file_name)
 {
   printf("Start reading\n");
